@@ -111,7 +111,11 @@
                             if (original != $self.attr("src")) {
                                 $self.hide();
                                 if ($self.is("img")) {
-                                    $self.attr("src", original);
+                                    if($self.attr("data-wxd")){
+                                        $self.attr("src", original.replace("s3cdn.okchem.com","s3cdn.okchem.com/"+$self.attr("data-wxd")));
+                                    }else{
+                                        $self.attr("src", original);
+                                    }
                                     if (srcset != null) {
                                         $self.attr("srcset", srcset);
                                     }
