@@ -103,23 +103,22 @@
                         var elements_left = elements.length;
                         settings.appear.call(self, elements_left, settings);
                     }
+                    var original = $self.attr("data-" + settings.data_attribute);
+                    var srcset = $self.attr("data-" + settings.data_srcset);
+                    //var preview = original; // a smaller size
+                    if($self.attr("data-wxh")){
+                        original = original.replace("s3cdn.okchem.com","s3cdn.okchem.com/"+$self.attr("data-wxh"));
+                    }
                     $("<img />")
-                        .one("load", function() {
-                            var original = $self.attr("data-" + settings.data_attribute);
-                            var srcset = $self.attr("data-" + settings.data_srcset);
-
+                        .one("load", function() {                            
                             if (original != $self.attr("src")) {
                                 $self.hide();
                                 if ($self.is("img")) {
-                                    if($self.attr("data-wxd")){
-                                        $self.attr("src", original.replace("s3cdn.okchem.com","s3cdn.okchem.com/"+$self.attr("data-wxd")));
-                                    }else{
-                                        $self.attr("src", original);
-                                    }
+                                    $self.attr("src", original);
                                     if (srcset != null) {
                                         $self.attr("srcset", srcset);
                                     }
-                                } if ($self.is("video")) {
+                                } else if ($self.is("video")) {
                                     $self.attr("poster", original);
                                 } else {
                                     $self.css("background-image", "url('" + original + "')");
@@ -141,7 +140,7 @@
                             }
                         })
                         .attr({
-                            "src": $self.attr("data-" + settings.data_attribute),
+                            "src": original,
                             "srcset": $self.attr("data-" + settings.data_srcset) || ""
                         });
                 }
